@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI YOGA - Postures de {{ category_name }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: #d1fae5;
+      --secondary: #14b8a6;
+      --secondary-dark: #0d9488;
+      --text-dark: #065f46;
+      --text-light: #ecfdf5;
+      --bg-light: #f0fdfa;
+      --bg-gradient: linear-gradient(to right, #10b981, #14b8a6);
+    }
+
+    body {
+      background-color: var(--bg-light);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      padding-top: 76px;
+    }
+
+    /* Header & Navigation */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: color 0.3s ease;
+      margin: 0 10px;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    /* Page Header */
+    .page-header {
+      background: var(--bg-gradient);
+      color: white;
+      padding: 40px 0;
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    .page-header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .back-link {
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .back-link i {
+      margin-right: 8px;
+    }
+
+    /* Posture Cards */
+    .posture-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .posture-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .posture-img-container {
+      height: 180px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .posture-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .posture-card:hover .posture-img {
+      transform: scale(1.05);
+    }
+
+    .posture-content {
+      padding: 15px;
+    }
+
+    .posture-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+    }
+
+    .posture-desc {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .posture-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #777;
+      font-size: 0.85rem;
+    }
+
+    .posture-difficulty {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .difficulty-beginner {
+      background-color: #d1fae5;
+      color: #059669;
+    }
+
+    .difficulty-intermediate {
+      background-color: #fef3c7;
+      color: #d97706;
+    }
+
+    .difficulty-advanced {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+
+    /* Practice Section */
+    .practice-section {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 10px;
+      color: var(--primary);
+    }
+
+    .practice-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slideshow-container {
+      width: 100%;
+      max-width: 500px;
+      height: 400px;
+      position: relative;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .slide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 15px;
+    }
+
+    .slide-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .slide-desc {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .timer-container {
+      width: 100%;
+      max-width: 500px;
+      height: 5px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .timer-bar {
+      height: 100%;
+      width: 0;
+      background: var(--primary);
+      transition: width 0.1s linear;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-control {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-control:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-control.btn-secondary {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .btn-control.btn-secondary:hover {
+      background: #e5e7eb;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Side Postures */
+    .side-postures {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      height: 100%;
+    }
+
+    .side-posture-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .side-posture-item:last-child {
+      border-bottom: none;
+    }
+
+    .side-posture-item:hover {
+      background: #f9fafb;
+      transform: translateX(5px);
+    }
+
+    .side-posture-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .side-posture-info {
+      flex: 1;
+    }
+
+    .side-posture-title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+      font-size: 0.95rem;
+    }
+
+    .side-posture-duration {
+      font-size: 0.8rem;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+    }
+
+    .side-posture-duration i {
+      margin-right: 5px;
+      font-size: 0.75rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .practice-section {
+        padding: 20px;
+      }
+
+      .slideshow-container {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">AI YOGA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+  </div>
+</nav>
+
+<!-- Page Header -->
+<header class="page-header">
+  <div class="container page-header-content">
+    <a href="/" class="back-link mb-3">
+      <i class="fas fa-arrow-left"></i> Retour au catalogue
+    </a>
+    <h1 class="page-title">Postures de {{ category_name }}</h1>
+    <p class="text-white opacity-75">Découvrez et pratiquez les postures de cette catégorie</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <!-- Left Side Postures -->
+    <div class="col-lg-3 mb-4">
+      <div class="side-postures">
+
+
+        {% for posture in postures|slice:":4" %}
+        <div class="side-posture-item" data-posture-id="{{ forloop.counter0 }}">
+          <img src="{{ posture.image.url }}" alt="{{ posture.nom }}" class="side-posture-img">
+          <div class="side-posture-info">
+
+            <div class="side-posture-duration">
+              <i class="far fa-clock"></i> 15 secondes
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-4">
+          <p class="text-muted">Aucune posture précédente</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Main Practice Area -->
+    <div class="col-lg-6 mb-4">
+      <div class="practice-section">
+        <h2 class="section-title">
+          <i class="fas fa-play-circle"></i> Pratiquez maintenant
+        </h2>
+
+        <div class="practice-container">
+          <div class="slideshow-container">
+            {% for posture in postures %}
+            <div class="slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+              <img src="{{ posture.image.url }}" class="slide-img">
+              <div class="slide-info">
+                <p class="slide-desc">Maintenez cette posture pendant 15 secondes en respirant profondément.</p>
+              </div>
+            </div>
+            {% empty %}
+            <div class="slide active">
+              <div class="d-flex justify-content-center align-items-center h-100 bg-light">
+                <p class="text-muted">Aucune posture disponible pour cette catégorie</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="timer-container">
+            <div class="timer-bar" id="timer-bar"></div>
+          </div>
+
+          <div class="controls">
+            <button class="btn-control" id="start-btn">
+              <i class="fas fa-play"></i> Commencer
+            </button>
+            <button class="btn-control btn-secondary" id="pause-btn" disabled>
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button class="btn-control btn-secondary" id="reset-btn" disabled>
+              <i class="fas fa-redo"></i> Recommencer
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Right Side Postures -->
+    <div class="col-lg-3 mb-4">
+      <div class="side-postures">
+
+
+        {% for posture in postures|slice:"4:8" %}
+        <div class="side-posture-item" data-posture-id="{{ forloop.counter0|add:4 }}">
+          <img src="{{ posture.image.url }}" alt="{{ posture.nom }}" class="side-posture-img">
+          <div class="side-posture-info">
+
+            <div class="side-posture-duration">
+              <i class="far fa-clock"></i> 15 secondes
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-4">
+          <p class="text-muted">Aucune posture suivante</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Script pour rendre la navbar transparente au début et colorée au scroll
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+      navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+    } else {
+      navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+      navbar.style.boxShadow = 'none';
+    }
+  });
+
+  // Slideshow et timer pour les postures
+  document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slide');
+    const timerBar = document.getElementById('timer-bar');
+    const startBtn = document.getElementById('start-btn');
+    const pauseBtn = document.getElementById('pause-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const postureItems = document.querySelectorAll('.side-posture-item, .posture-card');
+
+    let currentSlide = 0;
+    let timer = null;
+    let progress = 0;
+    let isPaused = false;
+    const slideDuration = 15; // 15 secondes par posture
+    const updateInterval = 100; // Mise à jour du timer toutes les 100ms
+    const progressIncrement = (updateInterval / (slideDuration * 1000)) * 100;
+
+    // Fonction pour afficher une slide spécifique
+    function showSlide(index) {
+      // Masquer toutes les slides
+      slides.forEach(slide => {
+        slide.classList.remove('active');
+      });
+
+      // Afficher la slide demandée
+      if (slides[index]) {
+        slides[index].classList.add('active');
+        currentSlide = index;
+      }
+    }
+
+    // Fonction pour passer à la slide suivante
+    function nextSlide() {
+      progress = 0;
+      timerBar.style.width = '0%';
+
+      if (currentSlide < slides.length - 1) {
+        showSlide(currentSlide + 1);
+      } else {
+        showSlide(0); // Revenir au début
+      }
+    }
+
+    // Fonction pour démarrer le diaporama
+    function startSlideshow() {
+      if (timer) clearInterval(timer);
+
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      resetBtn.disabled = false;
+
+      timer = setInterval(function() {
+        if (!isPaused) {
+          progress += progressIncrement;
+          timerBar.style.width = progress + '%';
+
+          if (progress >= 100) {
+            nextSlide();
+          }
+        }
+      }, updateInterval);
+    }
+
+    // Fonction pour mettre en pause le diaporama
+    function pauseSlideshow() {
+      isPaused = !isPaused;
+
+      if (isPaused) {
+        pauseBtn.innerHTML = '<i class="fas fa-play"></i> Reprendre';
+      } else {
+        pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+      }
+    }
+
+    // Fonction pour réinitialiser le diaporama
+    function resetSlideshow() {
+      if (timer) clearInterval(timer);
+
+      progress = 0;
+      timerBar.style.width = '0%';
+      isPaused = false;
+      showSlide(0);
+
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+      resetBtn.disabled = true;
+    }
+
+    // Événements pour les boutons
+    startBtn.addEventListener('click', startSlideshow);
+    pauseBtn.addEventListener('click', pauseSlideshow);
+    resetBtn.addEventListener('click', resetSlideshow);
+
+    // Événements pour les postures cliquables
+    postureItems.forEach(item => {
+      item.addEventListener('click', function() {
+        const postureId = parseInt(this.getAttribute('data-posture-id'));
+
+        if (!isNaN(postureId) && postureId >= 0 && postureId < slides.length) {
+          // Réinitialiser le timer
+          if (timer) clearInterval(timer);
+          progress = 0;
+          timerBar.style.width = '0%';
+          isPaused = false;
+
+          // Afficher la posture sélectionnée
+          showSlide(postureId);
+
+          // Réinitialiser les boutons
+          startBtn.disabled = false;
+          pauseBtn.disabled = true;
+          pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+          resetBtn.disabled = true;
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
